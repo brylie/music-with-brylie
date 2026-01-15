@@ -19,12 +19,63 @@ mise run setup
 
 ## Development
 
-Run the development command:
+### Rendering Scenes
+
+To render the HelloManim scene:
+
+```bash
+# Low quality preview (fast)
+mise run render _2026/fundamentals/main.py HelloManim
+
+# High quality (slower)
+mise run render-hq _2026/fundamentals/main.py HelloManim
+```
+
+The rendered video will be in `media/videos/fundamentals/`.
+
+### Development Command
+
+Run the development check:
 ```bash
 mise run dev
 ```
 
-## Troubleshooting
+## Project Structure
+
+```
+music-with-brylie/
+├── _2026/                    # Videos organized by year
+│   └── fundamentals/         # Topic-based folders
+│       ├── __init__.py
+│       └── main.py          # Main scenes
+├── custom/                   # Reusable components
+│   ├── __init__.py
+│   └── audio_mobjects.py    # Custom music-related mobjects
+├── manim_imports_ext.py     # Universal imports
+└── mise.toml                # Development tools configuration
+```
+
+This project follows the organizational approach pioneered by 3Blue1Brown:
+- **Year-based organization**: Videos organized by year, then topic
+- **Reusable components**: Custom mobjects in `custom/` directory
+- **Scene ordering**: Use `SCENES_IN_ORDER` to define rendering order
+- **Universal imports**: Import `manim_imports_ext.py` instead of manim directly
+
+### Adding New Videos
+
+1. Create a new folder under `_2026/` (e.g., `_2026/acoustics/`)
+2. Add `__init__.py` and `main.py` to the new folder
+3. Define your scenes in `main.py`
+4. Add to `SCENES_IN_ORDER` list
+5. Render with `mise run render _2026/acoustics/main.py SceneName`
+
+## Technologies
+
+This project uses:
+- **mise** for Python version management and task automation
+- **uv** for fast Python package management
+- **manim** for creating mathematical animations
+
 
 ### FFmpeg Installation Issues
 
