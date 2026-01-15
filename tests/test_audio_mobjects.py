@@ -67,7 +67,7 @@ class TestGenerateTone:
 
         for duration in durations:
             audio_file = generate_tone(frequency=440, duration=duration, sample_rate=sample_rate)
-            rate, data = wavfile.read(audio_file)
+            _rate, data = wavfile.read(audio_file)
 
             expected_samples = int(sample_rate * duration)
             assert len(data) == expected_samples
@@ -119,7 +119,7 @@ class TestComputeFrequencySpectrum:
 
     def test_pure_tone_has_single_peak(self):
         """Test that a pure tone produces a single dominant peak."""
-        frequencies, magnitudes = compute_frequency_spectrum(frequency=440, duration=2)
+        _frequencies, magnitudes = compute_frequency_spectrum(frequency=440, duration=2)
 
         # Find peaks above 10% of max magnitude
         max_mag = np.max(magnitudes)
@@ -143,7 +143,7 @@ class TestComputeFrequencySpectrum:
 
     def test_frequency_range(self):
         """Test that frequencies are in expected range."""
-        frequencies, magnitudes = compute_frequency_spectrum(
+        frequencies, _magnitudes = compute_frequency_spectrum(
             frequency=440, duration=1, sample_rate=44100
         )
 
