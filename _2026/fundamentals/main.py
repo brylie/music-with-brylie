@@ -2,7 +2,7 @@
 
 from manim import *
 
-from custom.audio_mobjects import generate_tone
+from custom.audio_mobjects import compute_frequency_spectrum, generate_tone
 
 
 class HelloManim(Scene):
@@ -27,32 +27,116 @@ class HelloManim(Scene):
             FadeOut(subtitle),
         )
 
-        # Create axes for wave visualization
-        axes = Axes(
+        # Create time domain axes (left side)
+        time_axes = Axes(
             x_range=[0, 4 * PI, PI],
             y_range=[-1.5, 1.5, 0.5],
-            x_length=10,
-            y_length=4,
+            x_length=5,
+            y_length=3,
             axis_config={"color": BLUE_D},
+            tips=False,
+        ).shift(LEFT * 3.5)
+
+        # Add axis labels with units for time domain
+        time_axes.add_coordinates(
+            {
+                0: "0",
+                PI: MathTex(r"\pi"),
+                2 * PI: MathTex(r"2\pi"),
+                3 * PI: MathTex(r"3\pi"),
+                4 * PI: MathTex(r"4\pi"),
+            },
+            direction=DOWN,
+            font_size=16,
+        )
+        time_axes.get_y_axis().add_numbers(
+            [-1, 0, 1],
+            direction=LEFT,
+            font_size=16,
         )
 
-        # Create a sine wave (representing A440 - standard tuning)
-        sine_wave = axes.plot(lambda x: np.sin(x), color=BLUE)
+        time_label = Text("Time Domain", font_size=28)
+        time_label.next_to(time_axes, UP, buff=0.3)
 
-        wave_label = Text("y = sin(x)", font_size=36)
-        wave_label.next_to(axes, DOWN, buff=0.5)
+        time_x_label = Text("Time (radians)", font_size=20)
+        time_x_label.next_to(time_axes, DOWN, buff=0.5)
 
-        frequency_text = Text("A440 (Standard Tuning)", font_size=32)
-        frequency_text.next_to(wave_label, DOWN)
+        time_y_label = Text("Amplitude", font_size=20)
+        time_y_label.rotate(90 * DEGREES)
+        time_y_label.next_to(time_axes, LEFT, buff=0.3)
 
-        # Animate wave creation with A440 tone
-        self.play(Create(axes))
+        # Create frequency domain axes (right side)
+        freq_axes = Axes(
+            x_range=[0, 1000, 200],
+            y_range=[0, 0.6, 0.2],
+            x_length=5,
+            y_length=3,
+            axis_config={"color": GREEN_D},
+            tips=False,
+        ).shift(RIGHT * 3.5)
 
-        # Generate and play A440 tone during sine wave creation
+        # Add axis labels with units for frequency domain
+        freq_axes.get_x_axis().add_numbers(
+            [0, 200, 400, 600, 800, 1000],
+            direction=DOWN,
+            font_size=16,
+        )
+        freq_axes.get_y_axis().add_numbers(
+            [0, 0.2, 0.4, 0.6],
+            direction=LEFT,
+            font_size=16,
+            num_decimal_places=1,
+        )
+
+        freq_label = Text("Frequency Domain", font_size=28)
+        freq_label.next_to(freq_axes, UP, buff=0.3)
+
+        freq_x_label = Text("Frequency (Hz)", font_size=20)
+        freq_x_label.next_to(freq_axes, DOWN, buff=0.5)
+
+        freq_y_label = Text("Magnitude", font_size=20)
+        freq_y_label.rotate(90 * DEGREES)
+        freq_y_label.next_to(freq_axes, LEFT, buff=0.3)
+
+        # Create sine wave
+        sine_wave = time_axes.plot(lambda x: np.sin(x), color=BLUE)
+
+        # Compute and create frequency spectrum
+        frequencies, magnitudes = compute_frequency_spectrum(
+            frequency=440, duration=2, amplitude=0.5
+        )
+
+        # Create frequency spectrum line graph
+        freq_points = []
+        for f, m in zip(frequencies, magnitudes):
+            if 0 <= f <= 1000:  # Only plot up to 1000 Hz
+                freq_points.append(freq_axes.c2p(f, m))
+
+        if len(freq_points) > 1:
+            freq_spectrum = VMobject(color=GREEN)
+            freq_spectrum.set_points_as_corners(freq_points)
+        else:
+            freq_spectrum = VMobject()
+
+        frequency_text = Text("A440 (Standard Tuning)", font_size=28)
+        frequency_text.to_edge(DOWN, buff=0.5)
+
+        # Animate both domains
+        self.play(
+            Create(time_axes),
+            Create(freq_axes),
+            Write(time_label),
+            Write(freq_label),
+            Write(time_x_label),
+            Write(time_y_label),
+            Write(freq_x_label),
+            Write(freq_y_label),
+        )
+
+        # Generate and play A440 tone during visualization creation
         a440_audio = generate_tone(frequency=440, duration=2, amplitude=0.3)
         self.add_sound(a440_audio)
-        self.play(Create(sine_wave), run_time=2)
-        self.play(Write(wave_label))
+        self.play(Create(sine_wave), Create(freq_spectrum), run_time=2)
         self.play(FadeIn(frequency_text, shift=UP))
 
         self.wait(2)
@@ -60,9 +144,16 @@ class HelloManim(Scene):
         # Closing
         thank_you = Text("Let's explore sound together!", font_size=40)
         self.play(
-            FadeOut(axes),
+            FadeOut(time_axes),
+            FadeOut(freq_axes),
             FadeOut(sine_wave),
-            FadeOut(wave_label),
+            FadeOut(freq_spectrum),
+            FadeOut(time_label),
+            FadeOut(freq_label),
+            FadeOut(time_x_label),
+            FadeOut(time_y_label),
+            FadeOut(freq_x_label),
+            FadeOut(freq_y_label),
             FadeOut(frequency_text),
             FadeOut(title),
         )
