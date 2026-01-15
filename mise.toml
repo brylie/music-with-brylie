@@ -24,3 +24,11 @@ run = "uv run manim -pql"
 [tasks.render-hq]
 description = "Render a Manim scene in high quality"
 run = "uv run manim -pqh"
+
+[tasks.test]
+description = "Run tests with coverage"
+run = "uv run pytest tests/ -v --cov=utils --cov-report=term-missing"
+
+[tasks.test-watch]
+description = "Run tests in watch mode"
+run = "uv run pytest-watch tests/"
