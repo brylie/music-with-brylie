@@ -15,3 +15,11 @@ run = "uv sync"
 [tasks.dev]
 description = "Run development server"
 run = "uv run python --version"
+
+[tasks.render]
+description = "Render a Manim scene in low quality (fast preview)"
+run = "uv run manim -pql"
+
+[tasks.render-hq]
+description = "Render a Manim scene in high quality"
+run = "uv run manim -pqh"
