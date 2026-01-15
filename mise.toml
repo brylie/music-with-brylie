@@ -1,0 +1,17 @@
+[tools]
+ffmpeg = "7"
+python = "3.13"
+uv = "latest"
+
+[env._]
+
+[env._.python]
+venv = ".venv"
+
+[tasks.setup]
+description = "Install Python dependencies"
+run = "uv sync"
+
+[tasks.dev]
+description = "Run development server"
+run = "uv run python --version"
