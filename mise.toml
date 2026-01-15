@@ -1,5 +1,6 @@
 [tools]
 ffmpeg = "7"
+lefthook = "latest"
 python = "3.13"
 tinytex = "latest"
 uv = "latest"
