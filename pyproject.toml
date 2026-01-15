@@ -7,3 +7,10 @@ requires-python = ">=3.13,<3.14"
 dependencies = [
     "manim>=0.19.1",
 ]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["custom", "_2026", "_2026.fundamentals"]
