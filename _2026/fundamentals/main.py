@@ -2,6 +2,8 @@
 
 from manim import *
 
+from custom.audio_mobjects import generate_tone
+
 
 class HelloManim(Scene):
     """Introduction scene demonstrating a simple sound wave visualization."""
@@ -43,8 +45,12 @@ class HelloManim(Scene):
         frequency_text = Text("A440 (Standard Tuning)", font_size=32)
         frequency_text.next_to(wave_label, DOWN)
 
-        # Animate wave creation
+        # Animate wave creation with A440 tone
         self.play(Create(axes))
+
+        # Generate and play A440 tone during sine wave creation
+        a440_audio = generate_tone(frequency=440, duration=2, amplitude=0.3)
+        self.add_sound(a440_audio)
         self.play(Create(sine_wave), run_time=2)
         self.play(Write(wave_label))
         self.play(FadeIn(frequency_text, shift=UP))

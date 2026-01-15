@@ -1,7 +1,36 @@
 """Custom Manim mobjects for audio and music visualization."""
 
+import tempfile
+
 import numpy as np
 from manim import *
+from scipy.io import wavfile
+
+
+def generate_tone(frequency, duration=2, sample_rate=44100, amplitude=0.5):
+    """Generate a pure tone and save to temporary WAV file.
+
+    Args:
+        frequency: Frequency in Hz (e.g., 440 for A4)
+        duration: Duration in seconds
+        sample_rate: Samples per second
+        amplitude: Volume (0.0 to 1.0)
+
+    Returns:
+        Path to temporary WAV file
+    """
+    t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+    audio_data = amplitude * np.sin(2 * np.pi * frequency * t)
+
+    # Convert to 16-bit PCM
+    audio_data = (audio_data * 32767).astype(np.int16)
+
+    # Save to temporary file
+    temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    wavfile.write(temp_file.name, sample_rate, audio_data)
+    temp_file.close()
+
+    return temp_file.name
 
 
 class SoundWave(VGroup):
@@ -47,6 +76,10 @@ class SoundWave(VGroup):
         )
 
         self.add(self.axes, self.wave)
+
+    def get_audio_file(self):
+        """Generate and return path to audio file for this waveform."""
+        return generate_tone(self.frequency, self.duration, amplitude=self.amplitude)
 
 
 class FrequencySpectrum(VGroup):
