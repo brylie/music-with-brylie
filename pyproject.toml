@@ -5,5 +5,87 @@ description = "Educational resources about music."
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
-    "manim>=0.19.1",
+  "manim>=0.19.1",
+  "scipy>=1.13.0",
 ]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-cov>=4.1.0",
+  "mypy>=1.8.0",
+  "ruff>=0.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/utils", "src/_2026"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+  "src/utils/*_scenes.py", # Scene files are integration code
+  "src/_2026/**/*.py", # Video content not unit tested
+]
+
+[tool.coverage.report]
+exclude_also = [
+  "def __repr__",
+  "if __name__ == .__main__.:",
+]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+exclude = [
+  "src/_2026/", # Skip video scenes (use manim star imports)
+  "src/utils/.*_scenes\\.py$", # Skip scene files
+  "src/utils/.*_mobjects\\.py$", # Skip mobject files
+]
+
+[[tool.mypy.overrides]]
+module = ["manim.*", "scipy.*"]
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+  "E", # pycodestyle errors
+  "W", # pycodestyle warnings
+  "F", # pyflakes
+  "I", # isort
+  "B", # flake8-bugbear
+  "C4", # flake8-comprehensions
+  "UP", # pyupgrade
+]
+ignore = [
+  "E501", # line too long (handled by formatter)
+  "B008", # do not perform function calls in argument defaults
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["F401", "F811"]
+"src/**/*_scenes.py" = ["F403", "F405"] # Allow star imports in scene files
+"src/**/*_mobjects.py" = ["F403", "F405"] # Allow star imports in mobject files
+"src/_2026/**/*.py" = ["F403", "F405"] # Allow star imports in video scenes

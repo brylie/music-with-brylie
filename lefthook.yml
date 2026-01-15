@@ -1,0 +1,41 @@
+# Pre-push hook: Run comprehensive CI checks before pushing
+pre-push:
+  parallel: false
+  commands:
+    format-check:
+      tags: [formatting]
+      run: |
+        echo "🎨 Checking code formatting..."
+        mise exec -- dprint check && mise exec -- ruff format --check src/ tests/
+
+    lint:
+      tags: [quality]
+      run: |
+        echo "🔍 Running linters..."
+        mise exec -- ruff check src/ tests/
+
+    typecheck:
+      tags: [types]
+      run: |
+        echo "📝 Running type checks..."
+        uv run mypy src/
+
+    test:
+      tags: [tests]
+      run: |
+        echo "🧪 Running tests with coverage..."
+        uv run pytest tests/ --cov=utils --cov-report=term-missing --cov-fail-under=60
+
+# Pre-commit hook: Quick formatting and linting on staged files
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.py"
+      run: mise exec -- ruff format {staged_files} && mise exec -- ruff check --fix {staged_files}
+      stage_fixed: true
+
+    format-docs:
+      glob: "*.{md,yml,yaml,json,toml}"
+      run: mise exec -- dprint fmt {staged_files} --allow-no-files
+      stage_fixed: true
