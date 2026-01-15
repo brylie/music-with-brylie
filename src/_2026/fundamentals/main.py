@@ -109,7 +109,7 @@ class HelloManim(Scene):
 
         # Create frequency spectrum line graph
         freq_points = []
-        for f, m in zip(frequencies, magnitudes):
+        for f, m in zip(frequencies, magnitudes, strict=True):
             if 0 <= f <= 1000:  # Only plot up to 1000 Hz
                 freq_points.append(freq_axes.c2p(f, m))
 

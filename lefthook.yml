@@ -1,42 +1,46 @@
-# EXAMPLE USAGE:
-#
-#   Refer for explanation to following link:
-#   https://lefthook.dev/configuration/
-#
-# pre-push:
-#   jobs:
-#     - name: packages audit
-#       tags:
-#         - frontend
-#         - security
-#       run: yarn audit
-#
-#     - name: gems audit
-#       tags:
-#         - backend
-#         - security
-#       run: bundle audit
-#
-# pre-commit:
-#   parallel: true
-#   jobs:
-#     - run: yarn eslint {staged_files}
-#       glob: "*.{js,ts,jsx,tsx}"
-#
-#     - name: rubocop
-#       glob: "*.rb"
-#       exclude:
-#         - config/application.rb
-#         - config/routes.rb
-#       run: bundle exec rubocop --force-exclusion {all_files}
-#
-#     - name: govet
-#       files: git ls-files -m
-#       glob: "*.go"
-#       run: go vet {files}
-#
-#     - script: "hello.js"
-#       runner: node
-#
-#     - script: "hello.go"
-#       runner: go run
+# Pre-push hook: Run comprehensive CI checks before pushing
+pre-push:
+  parallel: false
+  commands:
+    format-check:
+      tags: [formatting]
+      run: |
+        echo "🎨 Checking code formatting..."
+        mise exec -- dprint check && mise exec -- ruff format --check src/ tests/
+
+    lint:
+      tags: [quality]
+      run: |
+        echo "🔍 Running linters..."
+        mise exec -- ruff check src/ tests/
+
+    typecheck:
+      tags: [types]
+      run: |
+        echo "📝 Running type checks..."
+        uv run mypy src/
+
+    test:
+      tags: [tests]
+      run: |
+        echo "🧪 Running tests with coverage..."
+        uv run pytest tests/ --cov=utils --cov-report=term-missing --cov-fail-under=60
+
+    summary:
+      tags: [summary]
+      run: |
+        echo "✅ All CI checks passed! Safe to push."
+
+# Pre-commit hook: Quick formatting and linting on staged files
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.py"
+      run: mise exec -- ruff format {staged_files} && mise exec -- ruff check --fix {staged_files}
+      stage_fixed: true
+
+    format-docs:
+      glob: "*.{md,yml,yaml,json}"
+      run: mise exec -- dprint fmt {staged_files}
+      stage_fixed: true

@@ -66,9 +66,7 @@ class TestGenerateTone:
         sample_rate = 44100
 
         for duration in durations:
-            audio_file = generate_tone(
-                frequency=440, duration=duration, sample_rate=sample_rate
-            )
+            audio_file = generate_tone(frequency=440, duration=duration, sample_rate=sample_rate)
             rate, data = wavfile.read(audio_file)
 
             expected_samples = int(sample_rate * duration)
@@ -136,9 +134,7 @@ class TestComputeFrequencySpectrum:
         test_frequencies = [220, 440, 880]
 
         for test_freq in test_frequencies:
-            frequencies, magnitudes = compute_frequency_spectrum(
-                frequency=test_freq, duration=2
-            )
+            frequencies, magnitudes = compute_frequency_spectrum(frequency=test_freq, duration=2)
 
             peak_idx = np.argmax(magnitudes)
             peak_freq = frequencies[peak_idx]
@@ -172,9 +168,7 @@ class TestComputeFrequencySpectrum:
         """Test that longer duration provides better frequency resolution."""
         freq = 440
 
-        freq_short, _ = compute_frequency_spectrum(
-            freq, duration=0.5, sample_rate=44100
-        )
+        freq_short, _ = compute_frequency_spectrum(freq, duration=0.5, sample_rate=44100)
         freq_long, _ = compute_frequency_spectrum(freq, duration=2, sample_rate=44100)
 
         # Longer duration should have finer frequency spacing

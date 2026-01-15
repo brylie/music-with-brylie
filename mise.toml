@@ -1,7 +1,9 @@
 [tools]
+dprint = "latest"
 ffmpeg = "7"
 lefthook = "latest"
 python = "3.13"
+ruff = "latest"
 tinytex = "latest"
 uv = "latest"
 
@@ -33,3 +35,19 @@ run = "uv run pytest tests/ -v --cov=utils --cov-report=term-missing"
 [tasks.test-watch]
 description = "Run tests in watch mode"
 run = "uv run pytest-watch tests/"
+
+[tasks.lint]
+description = "Run all linters (ruff + dprint)"
+run = ["ruff check src/ tests/", "dprint check"]
+
+[tasks.format]
+description = "Format all code (ruff + dprint)"
+run = ["ruff format src/ tests/", "ruff check --fix src/ tests/", "dprint fmt"]
+
+[tasks.typecheck]
+description = "Run mypy type checker"
+run = "uv run mypy src/"
+
+[tasks.ci]
+description = "Run all CI checks (tests, lint, typecheck)"
+run = ["mise run test", "mise run lint", "mise run typecheck"]
