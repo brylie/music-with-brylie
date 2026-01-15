@@ -39,7 +39,7 @@ def generate_tone(frequency, duration=2, sample_rate=44100, amplitude=0.5):
         frequency: Frequency in Hz (e.g., 440 for A4)
         duration: Duration in seconds
         sample_rate: Samples per second
-        amplitude: Volume (0.0 to 1.0)
+        amplitude: Volume (0.0 to 1.0, values outside this range will be clamped)
 
     Returns:
         Path to temporary WAV file
@@ -47,8 +47,8 @@ def generate_tone(frequency, duration=2, sample_rate=44100, amplitude=0.5):
     t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
     audio_data = amplitude * np.sin(2 * np.pi * frequency * t)
 
-    # Convert to 16-bit PCM
-    audio_data = (audio_data * 32767).astype(np.int16)
+    # Convert to 16-bit PCM (clamp to valid range)
+    audio_data = np.clip(audio_data * 32767, -32767, 32767).astype(np.int16)
 
     # Save to temporary file
     temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
@@ -110,7 +110,7 @@ class SoundWave(VGroup):
 class FrequencySpectrum(VGroup):
     """Visualization of frequency spectrum (placeholder for future development)."""
 
-    def __init__(self, frequencies, amplitudes, **kwargs):
+    def __init__(self, frequencies, amplitudes, **kwargs):  # noqa: ARG002
         super().__init__(**kwargs)
         # TODO: Implement frequency spectrum visualization
         pass
