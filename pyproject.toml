@@ -30,6 +30,19 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 
+[tool.coverage.run]
+source = ["src"]
+omit = [
+  "src/utils/*_scenes.py", # Scene files are integration code
+  "src/_2026/**/*.py", # Video content not unit tested
+]
+
+[tool.coverage.report]
+exclude_also = [
+  "def __repr__",
+  "if __name__ == .__main__.:",
+]
+
 [tool.mypy]
 python_version = "3.13"
 warn_return_any = true
