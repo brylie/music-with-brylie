@@ -3,30 +3,19 @@ Educational materials about music.
 
 ## Prerequisites
 
-- [mise](https://mise.jdx.dev/) - Tool version manager
-- FFmpeg 7 - Required for manim video rendering
-  - macOS: `brew install ffmpeg@7`
-  - Linux: `apt install ffmpeg` or equivalent
-  - Windows: Download from [ffmpeg.org](https://ffmpeg.org/download.html)
+- [mise](https://mise.jdx.dev/) - Manages Python, uv, and project dependencies
 
 ## Setup
 
-1. Install FFmpeg (see Prerequisites above)
+mise handles all tool installation and dependency management:
 
-2. Install mise tools (Python and uv):
-   ```bash
-   mise install
-   ```
+```bash
+# Install Python and uv (managed by mise)
+mise install
 
-3. Install Python dependencies:
-   ```bash
-   mise run setup
-   ```
-   
-   Or manually:
-   ```bash
-   uv sync
-   ```
+# Install Python dependencies
+mise run setup
+```
 
 ## Development
 
@@ -34,6 +23,43 @@ Run the development command:
 ```bash
 mise run dev
 ```
+
+## Troubleshooting
+
+### FFmpeg Installation Issues
+
+If manim fails to install due to missing FFmpeg, you'll need to install FFmpeg 7 manually:
+
+**macOS:**
+```bash
+brew install ffmpeg@7
+```
+
+**Linux:**
+```bash
+# Ubuntu/Debian
+sudo apt install ffmpeg
+
+# Fedora/RHEL
+sudo dnf install ffmpeg
+```
+
+**Windows:**
+Download from [ffmpeg.org](https://ffmpeg.org/download.html)
+
+After installing FFmpeg, run:
+```bash
+mise run setup
+```
+
+### Manual Tool Installation
+
+If you prefer not to use mise, you can install tools manually:
+
+1. Install Python 3.13
+2. Install uv: `pip install uv`
+3. Install FFmpeg 7 (see above)
+4. Install dependencies: `uv sync`
 
 ## Project Structure
 
