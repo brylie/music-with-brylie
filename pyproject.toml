@@ -3,7 +3,7 @@ name = "music-with-brylie"
 version = "0.1.0"
 description = "Educational resources about music."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "manim>=0.19.1",
 ]
