@@ -35,16 +35,6 @@ Run the development command:
 mise run dev
 ```
 
-### Experimental: Auto-sync dependencies
-
-To enable automatic dependency synchronization when `pyproject.toml` or `uv.lock` changes, set the experimental flag:
-
-```bash
-export MISE_EXPERIMENTAL=1
-```
-
-With this enabled, mise will automatically run `uv sync` when dependencies change.
-
 ## Project Structure
 
 This project uses:
