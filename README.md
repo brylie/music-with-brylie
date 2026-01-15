@@ -63,7 +63,6 @@ music-with-brylie/
 ├── tests/                    # Test suite
 │   ├── __init__.py
 │   └── test_audio_mobjects.py
-├── manim_imports_ext.py     # Universal imports
 └── mise.toml                # Development tools configuration
 ```
 
@@ -71,7 +70,6 @@ This project follows the organizational approach pioneered by 3Blue1Brown:
 - **Year-based organization**: Videos organized by year, then topic
 - **Reusable utilities**: Utility functions in `utils/` directory
 - **Scene ordering**: Use `SCENES_IN_ORDER` to define rendering order
-- **Universal imports**: Import `manim_imports_ext.py` instead of manim directly
 - **Test coverage**: Tests in `tests/` directory with pytest
 
 ### Adding New Videos
