@@ -3,19 +3,21 @@ Educational materials about music.
 
 ## Prerequisites
 
-- [mise](https://mise.jdx.dev/) - Manages Python, uv, and project dependencies
+- [mise](https://mise.jdx.dev/) - Manages Python, uv, FFmpeg, TinyTeX, and project dependencies
 
 ## Setup
 
 mise handles all tool installation and dependency management:
 
 ```bash
-# Install Python and uv (managed by mise)
+# Install Python, uv, FFmpeg, and TinyTeX (managed by mise)
 mise install
 
 # Install Python dependencies
 mise run setup
 ```
+
+**Note**: TinyTeX provides LaTeX support for mathematical notation in manim. It automatically installs needed packages on first use.
 
 ## Development
 

@@ -1,6 +1,7 @@
 [tools]
 ffmpeg = "7"
 python = "3.13"
+tinytex = "latest"
 uv = "latest"
 
 [env._]
