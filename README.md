@@ -42,6 +42,13 @@ Run the development check:
 mise run dev
 ```
 
+### Running Tests
+
+Run the test suite with coverage:
+```bash
+mise run test
+```
+
 ## Project Structure
 
 ```
@@ -50,18 +57,22 @@ music-with-brylie/
 │   └── fundamentals/         # Topic-based folders
 │       ├── __init__.py
 │       └── main.py          # Main scenes
-├── custom/                   # Reusable components
+├── utils/                    # Utility functions
 │   ├── __init__.py
-│   └── audio_mobjects.py    # Custom music-related mobjects
+│   └── audio_mobjects.py    # Audio utilities and mobjects
+├── tests/                    # Test suite
+│   ├── __init__.py
+│   └── test_audio_mobjects.py
 ├── manim_imports_ext.py     # Universal imports
 └── mise.toml                # Development tools configuration
 ```
 
 This project follows the organizational approach pioneered by 3Blue1Brown:
 - **Year-based organization**: Videos organized by year, then topic
-- **Reusable components**: Custom mobjects in `custom/` directory
+- **Reusable utilities**: Utility functions in `utils/` directory
 - **Scene ordering**: Use `SCENES_IN_ORDER` to define rendering order
 - **Universal imports**: Import `manim_imports_ext.py` instead of manim directly
+- **Test coverage**: Tests in `tests/` directory with pytest
 
 ### Adding New Videos
 
@@ -71,6 +82,10 @@ This project follows the organizational approach pioneered by 3Blue1Brown:
 4. Add to `SCENES_IN_ORDER` list
 5. Render with `mise run render _2026/acoustics/main.py SceneName`
 
+### Adding Utility Functions
+
+Place reusable utility functions in the `utils/` directory. Add corresponding tests in `tests/` and run `mise run test` to verify.
+
 ## Technologies
 
 This project uses:
@@ -78,6 +93,7 @@ This project uses:
 - **uv** for fast Python package management
 - **manim** for creating mathematical animations
 - **scipy** for audio synthesis and signal processing (generate tones, waveforms)
+- **pytest** for testing with coverage reporting
 
 
 ### FFmpeg Installation Issues

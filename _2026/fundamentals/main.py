@@ -2,7 +2,7 @@
 
 from manim import *
 
-from custom.audio_mobjects import compute_frequency_spectrum, generate_tone
+from utils.audio_mobjects import compute_frequency_spectrum, generate_tone
 
 
 class HelloManim(Scene):
