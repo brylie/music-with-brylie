@@ -77,6 +77,7 @@ This project uses:
 - **mise** for Python version management and task automation
 - **uv** for fast Python package management
 - **manim** for creating mathematical animations
+- **scipy** for audio synthesis and signal processing (generate tones, waveforms)
 
 
 ### FFmpeg Installation Issues
