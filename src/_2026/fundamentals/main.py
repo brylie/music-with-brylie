@@ -142,9 +142,6 @@ class HelloManim(Scene):
         self.play(Create(sine_wave), Create(freq_spectrum), run_time=2)
         self.play(FadeIn(frequency_text, shift=UP))
 
-        # Clean up temporary audio file
-        os.unlink(a440_audio)
-
         self.wait(2)
 
         # Closing
@@ -165,6 +162,9 @@ class HelloManim(Scene):
         )
         self.play(Write(thank_you))
         self.wait(2)
+
+        # Clean up temporary audio file after rendering is complete
+        os.unlink(a440_audio)
 
 
 # Define the order scenes should be rendered
