@@ -16,16 +16,22 @@ venv = ".venv"
 description = "Install Python dependencies"
 run = "uv sync"
 
+[tasks.clean]
+description = "Remove media directory"
+run = "rm -rf media"
+
 [tasks.dev]
 description = "Run development server"
 run = "uv run python --version"
 
 [tasks.render]
 description = "Render a Manim scene in low quality (fast preview)"
+depends = ["clean"]
 run = "uv run manim -pql"
 
 [tasks.render-hq]
 description = "Render a Manim scene in high quality"
+depends = ["clean"]
 run = "uv run manim -pqh"
 
 [tasks.test]
