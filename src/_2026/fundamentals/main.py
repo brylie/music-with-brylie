@@ -1,5 +1,7 @@
 """Main scenes for fundamentals of sound and music theory."""
 
+import os
+
 from manim import *
 
 from utils.audio_mobjects import compute_frequency_spectrum, generate_tone
@@ -139,6 +141,9 @@ class HelloManim(Scene):
         self.add_sound(a440_audio)
         self.play(Create(sine_wave), Create(freq_spectrum), run_time=2)
         self.play(FadeIn(frequency_text, shift=UP))
+
+        # Clean up temporary audio file
+        os.unlink(a440_audio)
 
         self.wait(2)
 
