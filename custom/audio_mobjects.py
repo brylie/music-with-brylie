@@ -7,6 +7,31 @@ from manim import *
 from scipy.io import wavfile
 
 
+def compute_frequency_spectrum(frequency, duration=2, sample_rate=44100, amplitude=0.5):
+    """Compute frequency spectrum of a pure tone using FFT.
+
+    Args:
+        frequency: Frequency in Hz (e.g., 440 for A4)
+        duration: Duration in seconds
+        sample_rate: Samples per second
+        amplitude: Volume (0.0 to 1.0)
+
+    Returns:
+        tuple: (frequencies, magnitudes) arrays for plotting
+    """
+    t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+    audio_data = amplitude * np.sin(2 * np.pi * frequency * t)
+
+    # Compute FFT
+    fft_vals = np.fft.rfft(audio_data)
+    fft_freq = np.fft.rfftfreq(len(audio_data), 1 / sample_rate)
+
+    # Compute magnitude
+    magnitudes = np.abs(fft_vals) / len(audio_data)
+
+    return fft_freq, magnitudes
+
+
 def generate_tone(frequency, duration=2, sample_rate=44100, amplitude=0.5):
     """Generate a pure tone and save to temporary WAV file.
 
