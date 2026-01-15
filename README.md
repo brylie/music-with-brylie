@@ -27,10 +27,10 @@ To render the HelloManim scene:
 
 ```bash
 # Low quality preview (fast)
-mise run render _2026/fundamentals/main.py HelloManim
+mise run render src/_2026/fundamentals/main.py HelloManim
 
 # High quality (slower)
-mise run render-hq _2026/fundamentals/main.py HelloManim
+mise run render-hq src/_2026/fundamentals/main.py HelloManim
 ```
 
 The rendered video will be in `media/videos/fundamentals/`.
@@ -53,36 +53,38 @@ mise run test
 
 ```
 music-with-brylie/
-├── _2026/                    # Videos organized by year
-│   └── fundamentals/         # Topic-based folders
+├── src/                      # Source code (src layout)
+│   ├── _2026/               # Videos organized by year
+│   │   └── fundamentals/    # Topic-based folders
+│   │       ├── __init__.py
+│   │       └── main.py      # Main scenes
+│   └── utils/               # Utility functions
 │       ├── __init__.py
-│       └── main.py          # Main scenes
-├── utils/                    # Utility functions
-│   ├── __init__.py
-│   └── audio_mobjects.py    # Audio utilities and mobjects
+│       └── audio_mobjects.py # Audio utilities
 ├── tests/                    # Test suite
 │   ├── __init__.py
 │   └── test_audio_mobjects.py
 └── mise.toml                # Development tools configuration
 ```
 
-This project follows the organizational approach pioneered by 3Blue1Brown:
+This project follows Python best practices and 3Blue1Brown's organizational approach:
+- **Src layout**: Source code in `src/` directory for clean imports
 - **Year-based organization**: Videos organized by year, then topic
-- **Reusable utilities**: Utility functions in `utils/` directory
+- **Reusable utilities**: Utility functions in `src/utils/` directory
 - **Scene ordering**: Use `SCENES_IN_ORDER` to define rendering order
 - **Test coverage**: Tests in `tests/` directory with pytest
 
 ### Adding New Videos
 
-1. Create a new folder under `_2026/` (e.g., `_2026/acoustics/`)
+1. Create a new folder under `src/_2026/` (e.g., `src/_2026/acoustics/`)
 2. Add `__init__.py` and `main.py` to the new folder
 3. Define your scenes in `main.py`
 4. Add to `SCENES_IN_ORDER` list
-5. Render with `mise run render _2026/acoustics/main.py SceneName`
+5. Render with `mise run render src/_2026/acoustics/main.py SceneName`
 
 ### Adding Utility Functions
 
-Place reusable utility functions in the `utils/` directory. Add corresponding tests in `tests/` and run `mise run test` to verify.
+Place reusable utility functions in the `src/utils/` directory. Add corresponding tests in `tests/` and run `mise run test` to verify.
 
 ## Technologies
 
