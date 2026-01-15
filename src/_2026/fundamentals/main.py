@@ -1,5 +1,6 @@
 """Main scenes for fundamentals of sound and music theory."""
 
+import atexit
 import os
 
 from manim import *
@@ -138,6 +139,10 @@ class HelloManim(Scene):
 
         # Generate and play A440 tone during visualization creation
         a440_audio = generate_tone(frequency=440, duration=2, amplitude=0.3)
+
+        # Register cleanup to run after Manim's SceneFileWriter finalization
+        atexit.register(lambda: os.path.exists(a440_audio) and os.unlink(a440_audio))
+
         self.add_sound(a440_audio)
         self.play(Create(sine_wave), Create(freq_spectrum), run_time=2)
         self.play(FadeIn(frequency_text, shift=UP))
@@ -162,9 +167,6 @@ class HelloManim(Scene):
         )
         self.play(Write(thank_you))
         self.wait(2)
-
-        # Clean up temporary audio file after rendering is complete
-        os.unlink(a440_audio)
 
 
 # Define the order scenes should be rendered
