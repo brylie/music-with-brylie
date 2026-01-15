@@ -3,6 +3,7 @@
 from manim import *
 
 from utils.audio_mobjects import compute_frequency_spectrum, generate_tone
+from utils.common_scenes import Credits
 
 
 class HelloManim(Scene):
@@ -164,4 +165,5 @@ class HelloManim(Scene):
 # Define the order scenes should be rendered
 SCENES_IN_ORDER = [
     HelloManim,
+    Credits,
 ]

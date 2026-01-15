@@ -86,6 +86,29 @@ This project follows Python best practices and 3Blue1Brown's organizational appr
 
 Place reusable utility functions in the `src/utils/` directory. Add corresponding tests in `tests/` and run `mise run test` to verify.
 
+### Using the Credits Scene
+
+A standard Credits scene is available in `src/utils/common_scenes.py` that displays:
+- Creative Commons Attribution 4.0+ license for video content
+- MIT license for source code
+- GitHub repository URL
+
+To render it:
+```bash
+mise run render src/utils/common_scenes.py Credits
+```
+
+Import it in your scenes to include at the end of videos:
+```python
+from utils.common_scenes import Credits
+
+# In your SCENES_IN_ORDER list:
+SCENES_IN_ORDER = [
+    YourScene,
+    Credits,
+]
+```
+
 ## Technologies
 
 This project uses:
